@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>   
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+    <!--<script src="piechart.js"></script>    -->
+    <link rel="stylesheet" href="css/weathercss.css">    
+    <title>Weather App</title>
+</head>
+<body>
+    
+    <div ng-app="weatherApp" ng-controller="weatherController">
+        <div class="container">
+            <div class="row">
+                <div class="column" style="text-align:right;"><img src="images/temperature.png" alt="" width="40%"></div>
+                <div class="column"><p class="unit">{{temperatureValue}}<span style="font-size:50%">&deg{{units}}</span></p></div>               
+                <div class="column"><img ng-src="images/{{weatherData[dayindex].status}}.png" width="100%"></div>
+                <div class="column"><img ng-class="selectClass(mouseOnImage)" src="images/gear.png" alt="" ng-click="showHideOptions()" ng-mouseenter="mouseOnImage=1"
+                    ng-mouseleave="mouseOnImage=0"> <br><span ng-hide="!mouseOnImage" class="optionsText">Ρυθμίσεις</span></div>                           
+            </div>
+
+            <div class="row">
+                <div class="column" style="text-align:right;"><img src="images/humidity.png" alt="" width="40%"></div>
+                <div class="column"><p class="unit">{{weatherData[dayindex].humidity}}<span style="font-size:50%">%</span></p></div>                
+                <div class="column" class="day"><p class="day">{{weatherData[dayindex].day}}</p></div>
+                <div class="column">
+                <span ng-hide="showOptions" class="optionsText">Μονάδες Μέτρησης Θερμοκρασίας</span><br><br>
+                <div class="options" ng-hide="showOptions">
+                    <select name="selunits" id="selunits" ng-model="units" ng-change="unitsChange(units)">
+                        <option value="C">&degC</option>
+                        <option value="F">&degF</option>
+                    </select>
+                </div>
+              </div>
+              <div class="column"></div>
+            </div>
+            <div class="row">    
+                <div class="column"><button class="button" ng-click="leftButtonClick()"><</button></div>          
+                <div class="column"><p class="day"></p></div>
+                <div class="column"><button class="button" ng-click="rightButtonClick()">></button></div>
+            </div>
+            <div class="row">    
+                <div class="column">
+                    <div style="width: 100%">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th ng-click="dayindex=0">Δευτέρα</th>                            
+                                <th ng-click="dayindex=1">Τρίτη</th>
+                                <th ng-click="dayindex=2">Τετάρτη</th>
+                                <th ng-click="dayindex=3">Πέμπτη</th>
+                                <th ng-click="dayindex=4">Παρασκευή</th>
+                                <th ng-click="dayindex=5">Σάββατο</th>
+                                <th ng-click="dayindex=6">Κυριακή</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding:0px; margin:0px"><img src="images/temperature.png" alt="" width="45%"></td>
+                                    <td ng-repeat="temp in weatherData"><span ng-class="getClass($index)">{{convertToF(temp.temperature,units)}}&deg{{units}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:0px; margin:0px"><img src="images/humidity.png" alt="" width="45%"></td>
+                                    <td ng-repeat="hum in weatherData"><span ng-class="getClass($index)">{{hum.humidity}}%</span></td>
+                                </tr>
+                                <tr>  
+                                    <td></td>                              
+                                    <td ng-repeat="stat in weatherData"><img ng-class="getClass($index)" ng-src="images/{{stat.status}}.png" width="50%"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>          
+                <div class="column"></div>
+                <div class="column"></div>
+            </div>  
+        </div> 
+        <div class="chart" id="curve_chart"></div> 
+    </div>
+    <script src="weatherapp.js"></script>  
+</body>
+</html>
